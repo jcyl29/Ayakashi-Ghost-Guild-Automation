@@ -19,6 +19,7 @@ $.ajaxSetup({
         }
 
         if (document.querySelector('.btn-battle-xl')) {
+            console.log("battle button exists");
             setTimeout(function(){document.querySelector('.btn-battle-xl').click();}, 2000);
 
         }
@@ -35,11 +36,11 @@ var foundEnemy = false;
 $('.defense-kiai+dd').each(function(i, el) {
     if (parseInt(el.innerHTML) < 30) {
         console.log("def:",el.innerHTML);
-        foundEnemy = true
+        foundEnemy = true;
         el.click();
         return;
     }
 });
 if (!foundEnemy) {
-    document.querySelector()
+    document.querySelector('#update-battle-list').click();
 }
