@@ -14,14 +14,11 @@ $.ajaxSetup({
         console.log(gameData.opponents[0]);
         for (var i = 0; i < gameData.opponents.length; i++) {
             if (gameData.opponents[i].detail.defense < testDefense) {
+                foundEnemy = true;
+
                 console.info("found enemy, defense is" + gameData.opponents[i].detail.defense);
-                $('dd:contains(' + gameData.opponents[i].detail.defense + ')').css("background", "white");
-
                 setTimeout(function(){
-//                    $('dd:contains(' + gameData.opponents[i].detail.defense + ')').css("border", "30px");
-                    $('dd:contains(' + gameData.opponents[i].detail.defense + ')')[0].click();
-                    foundEnemy = true;
-
+                    $('dd').filter(function(index) { return $(this).text() == gameData.opponents[i].detail.defense; }).first()[0].click();
                 }, 1000);
                 break;
 
@@ -34,7 +31,7 @@ $.ajaxSetup({
             setTimeout(function () {
                 document.querySelector('.btn-battle-xl').click();
 
-            }, 2000);
+            }, 500);
 
         }
 
@@ -53,7 +50,7 @@ firstImgObserver = new MutationObserver(function (mutations) {
         refreshComplete = true;
         if (!foundEnemy) {
             console.warn("battle list changed time to search again");
-            setTimeout(function(){document.querySelector('#update-battle-list').click();}, 1000);
+            setTimeout(function(){document.querySelector('#update-battle-list').click();}, 4000);
 
 
         }
