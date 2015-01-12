@@ -24,15 +24,16 @@ $.ajaxSetup({
     complete: function (jqXHR) {
         console.log("complete", jqXHR);
         var gameData = JSON.parse(jqXHR.responseText);
-        console.log(gameData.opponents[0]);
+        console.log(gameData.opponents);
         for (var i = 0; i < gameData.opponents.length; i++) {
             if (gameData.opponents[i].detail.defense < testDefense) {
                 foundEnemy = true;
 
                 console.info("found enemy, defense=" + gameData.opponents[i].detail.defense);
-                setTimeout(function(){
-                    $('dd').filter(function(index) { return $(this).text() == gameData.opponents[i].detail.defense; }).first()[0].click();
-                }, 1000);
+                $('dd').filter(function(index) { return $(this).text() == gameData.opponents[i].detail.defense; }).first()[0].click();
+//                setTimeout(function(){
+//                    $('dd').filter(function(index) { return $(this).text() == gameData.opponents[i].detail.defense; }).first()[0].click();
+//                }, 1000);
                 break;
 
             }

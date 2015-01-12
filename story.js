@@ -1,10 +1,11 @@
 //old way, still works
 var zeroreached = false;
-function wait2min(options) {
+function autoStory(options) {
 	var options = options || {};
 
 	var delay = options.delay || 1000,
-		timeToReset = options.timeToReset || 120000;
+		timeToReset = options.timeToReset || 120000,
+        minHP = options.minHP || 0;
 
 	var myTimeout;
 
@@ -14,7 +15,7 @@ function wait2min(options) {
 
 			console.log(document.querySelector("a[data-rel='back']"));
 
-			if (remainingHP > 0 || zeroreached) {
+			if (remainingHP > minHP || zeroreached) {
 				zeroreached = false;
 				document.title = "investigating" + document.title;
 				document.querySelector("button#do-adventure").click();
@@ -22,9 +23,9 @@ function wait2min(options) {
 			} else {
 				clearInterval(myTimeout);
 				zeroreached = true;
-				document.title = "waiting two minutes" + document.title;
+				document.title = "wait," + document.title;
 
-				setTimeout(function(){wait2min({delay:delay})}, timeToReset);
+				setTimeout(function(){autoStory({delay:delay})}, timeToReset);
 			}
 
             if (window.location.hash != "") {
@@ -34,7 +35,7 @@ function wait2min(options) {
 		}, delay);
 
 }
-wait2min({delay:3000});
+autoStory({delay: 3000, timeToReset: 17 * 60000, minHP: 17});
 
 
 $.ajaxSetup({
