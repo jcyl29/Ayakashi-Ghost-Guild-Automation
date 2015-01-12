@@ -1,13 +1,26 @@
 //http://zc2.ayakashi.zynga.com/app.php?_c=battle
 var foundEnemy = false;
-var testDefense = 20;
+var testDefense = 42;
 var refreshComplete = false;
+var mytimeout;
+var beginBattle = false;
+
+
 
 $.ajaxSetup({
-    beforeSend: function (jqXHR) {
-        console.log("beforeSend", jqXHR);
+    beforeSend: function (jqXHR, settings) {
+        console.log("beforeSend", jqXHR, settings);
 
     },
+    error: function(jqXHR, settings) {
+        console.log("error, refresh opponent list", jqXHR, settings);
+        if (mytimeout) {
+            clearTimeout(mytimeout);
+            mytimeout = setTimeout(function(){document.querySelector('#update-battle-list').click();}, 4000);
+        }
+
+    },
+
     complete: function (jqXHR) {
         console.log("complete", jqXHR);
         var gameData = JSON.parse(jqXHR.responseText);
@@ -16,7 +29,7 @@ $.ajaxSetup({
             if (gameData.opponents[i].detail.defense < testDefense) {
                 foundEnemy = true;
 
-                console.info("found enemy, defense is" + gameData.opponents[i].detail.defense);
+                console.info("found enemy, defense=" + gameData.opponents[i].detail.defense);
                 setTimeout(function(){
                     $('dd').filter(function(index) { return $(this).text() == gameData.opponents[i].detail.defense; }).first()[0].click();
                 }, 1000);
@@ -25,41 +38,55 @@ $.ajaxSetup({
             }
         }
 
-        if (document.querySelector('.btn-battle-xl')) {
-            console.log("battle button exists, enemy found", foundEnemy);
-            foundEnemy = true;
-            setTimeout(function () {
-                document.querySelector('.btn-battle-xl').click();
-
-            }, 500);
-
-        }
-
-
     }
 });
 
-observerConfig = {
-    attributes: true,
-    childList: true,
-    characterData: true
-};
-
-firstImgObserver = new MutationObserver(function (mutations) {
+refreshButtonObserver = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
         refreshComplete = true;
         if (!foundEnemy) {
             console.warn("battle list changed time to search again");
-            setTimeout(function(){document.querySelector('#update-battle-list').click();}, 4000);
-
-
+            mytimeout = setTimeout(function(){document.querySelector('#update-battle-list').click();}, 1500);
         }
 
     });
 });
 
-firstImgObserver.observe(document.querySelector("#opponents-list"), observerConfig);
+refreshButtonObserver.observe(document.querySelector("#opponents-list"),  {
+    attributes: true,
+    childList: true,
+    characterData: true
+});
 
+battlePageObserver = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+        if (mutation.attributeName === "class") {
+            if (!beginBattle) {
+                beginBattle = true;
+
+                document.title = "battle" + new Date().toTimeString() + document.title;
+
+                foundEnemy = true;
+                if (document.querySelector('.btn-battle-xl')) {
+                    console.log("battle button exists, enemy found ", new Date().toTimeString());
+                    document.querySelector('.btn-battle-xl').click();
+                } else {
+                    console.log("sealstone already stolen");
+                    foundEnemy = false;
+                    goBack();
+                    document.querySelector('#update-battle-list').click();
+                }
+            }
+        }
+
+    });
+});
+
+battlePageObserver.observe(document.body, {
+    attributes: true,
+    childList: true,
+    characterData: true
+});
 
 
 $('.defense-kiai+dd').each(function (i, el) {
@@ -67,7 +94,6 @@ $('.defense-kiai+dd').each(function (i, el) {
         console.log("def:", el.innerHTML);
         foundEnemy = true;
         el.click();
-        return;
     }
 });
 if (!foundEnemy) {

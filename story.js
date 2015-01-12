@@ -26,7 +26,27 @@ function wait2min(options) {
 
 				setTimeout(function(){wait2min({delay:delay})}, timeToReset);
 			}
+
+            if (window.location.hash != "") {
+                console.log("reset hash");
+                window.location.hash = "";
+            }
 		}, delay);
 
 }
 wait2min({delay:3000});
+
+
+$.ajaxSetup({
+    beforeSend: function (jqXHR, settings) {
+        console.log("beforeSend", jqXHR, settings);
+
+    },
+    error: function(jqXHR, settings) {
+        console.log("error", jqXHR, settings);
+    },
+
+    complete: function (jqXHR) {
+        console.log("complete", jqXHR);
+    }
+});
