@@ -1,4 +1,6 @@
 //http://zc2.ayakashi.zynga.com/app.php?_c=battle
+$(document.body).css("visibility", "hidden");
+
 var foundEnemy = false;
 var testDefense = 42;
 var refreshComplete = false;
@@ -22,9 +24,9 @@ $.ajaxSetup({
     },
 
     complete: function (jqXHR) {
-        console.log("complete", jqXHR);
+//        console.log("complete", jqXHR);
         var gameData = JSON.parse(jqXHR.responseText);
-        console.log(gameData.opponents);
+//        console.log(gameData.opponents);
         for (var i = 0; i < gameData.opponents.length; i++) {
             if (gameData.opponents[i].detail.defense < testDefense) {
                 foundEnemy = true;
@@ -46,7 +48,7 @@ refreshButtonObserver = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
         refreshComplete = true;
         if (!foundEnemy) {
-            console.warn("battle list changed time to search again");
+//            console.warn("battle list changed time to search again");
             mytimeout = setTimeout(function(){document.querySelector('#update-battle-list').click();}, 1500);
         }
 
@@ -100,4 +102,14 @@ $('.defense-kiai+dd').each(function (i, el) {
 if (!foundEnemy) {
     document.querySelector('#update-battle-list').click();
 }
+
+//sealstone battle link with target stone link
+//http://zc2.ayakashi.zynga.com/app.php?_c=parts_pvp_event&action=battle_list&evid=78&target_item_id=2
+
+//$('a[href*=zid]').each(function (i, el) {
+//    var zid = el.href.match(/zid=(\d+)/)[1];
+//    var stone = 6;
+//    console.log("http://zc2.ayakashi.zynga.com/app.php?_c=parts_pvp_event&action=battle_confirm&target_user_id=" + zid + "&evid=78&ref=undefined&target_item_id=" + stone);
+//})
+
 

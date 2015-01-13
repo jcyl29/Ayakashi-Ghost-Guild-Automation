@@ -1,3 +1,4 @@
+$(document.body).css("visibility", "hidden");
 //old way, still works
 var zeroreached = false;
 function autoStory(options) {
@@ -35,7 +36,7 @@ function autoStory(options) {
 		}, delay);
 
 }
-autoStory({delay: 3000, timeToReset: 17 * 60000, minHP: 17});
+autoStory({delay: 3000, timeToReset: 3 * 60000});
 
 
 $.ajaxSetup({
