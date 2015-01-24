@@ -1,4 +1,3 @@
-$(document.body).css("visibility", "hidden");
 //old way, still works
 var zeroreached = false;
 function autoStory(options) {
