@@ -1,5 +1,6 @@
 //old way, still works
 var zeroreached = false;
+var floorComplete = false;
 function autoStory(options) {
 	var options = options || {};
 
@@ -11,13 +12,16 @@ function autoStory(options) {
 
 		myTimeout = setInterval(function() {
 			var remainingHP = parseInt(document.querySelector('.note').textContent.trim().match(/(\d+)\//)[1]);
-			document.title = "hp=" + remainingHP + document.title;
+//			document.title = "hp=" + remainingHP + document.title;
+            console.log("hp=" + remainingHP);
 
-			console.log(document.querySelector("a[data-rel='back']"));
+
+			console.log("what is a[data-rel='back']" + document.querySelector("a[data-rel='back']"));
 
 			if (remainingHP > minHP || zeroreached) {
 				zeroreached = false;
 				document.title = "investigating" + document.title;
+                console.log( "investigating");
 				document.querySelector("button#do-adventure").click();
 
 			} else {
@@ -32,15 +36,21 @@ function autoStory(options) {
                 console.log("reset hash");
                 window.location.hash = "";
             }
+
+            if (floorComplete) {
+                console.log("reached end of floor!");
+                clearInterval(myTimeout);
+            }
+
 		}, delay);
 
 }
-autoStory({delay: 3000, timeToReset: 3 * 60000});
+autoStory({delay: 2000, timeToReset: 3 * 60000, minHP: 8});
 
 
 $.ajaxSetup({
     beforeSend: function (jqXHR, settings) {
-        console.log("beforeSend", jqXHR, settings);
+        console.log("complete", jqXHR, jqXHR.abort);
 
     },
     error: function(jqXHR, settings) {
@@ -49,5 +59,9 @@ $.ajaxSetup({
 
     complete: function (jqXHR) {
         console.log("complete", jqXHR);
+        var gameData = JSON.parse(jqXHR.responseText);
+        if (gameData.stage && gameData.stage.progress) {
+            floorComplete = gameData.stage.progress == 100;
+        }
     }
 });
