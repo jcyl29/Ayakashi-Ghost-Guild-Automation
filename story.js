@@ -15,6 +15,13 @@ function autoStory(options) {
 //			document.title = "hp=" + remainingHP + document.title;
             console.log("hp=" + remainingHP);
 
+            if (floorComplete) {
+                clearInterval(myTimeout);
+                console.log("reached 100%");
+                //need to replace event id with the relevant tower event id
+                window.location = "http://zc2.ayakashi.zynga.com/app.php?_c=extra_quest_event_adventure&evid=80";
+
+            }
 
 			console.log("what is a[data-rel='back']" + document.querySelector("a[data-rel='back']"));
 
@@ -35,11 +42,6 @@ function autoStory(options) {
             if (window.location.hash != "") {
                 console.log("reset hash");
                 window.location.hash = "";
-            }
-
-            if (floorComplete) {
-                console.log("reached end of floor!");
-                clearInterval(myTimeout);
             }
 
 		}, delay);
