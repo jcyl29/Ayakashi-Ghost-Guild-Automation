@@ -17,10 +17,10 @@ function autoStory(options) {
 
             if (floorComplete) {
                 clearInterval(myTimeout);
-                console.log("reached 100%");
+                console.warn("reached 100%");
                 //need to replace event id with the relevant tower event id
                 window.location = "http://zc2.ayakashi.zynga.com/app.php?_c=extra_quest_event_adventure&evid=80";
-
+                return;
             }
 
 			console.log("what is a[data-rel='back']" + document.querySelector("a[data-rel='back']"));
