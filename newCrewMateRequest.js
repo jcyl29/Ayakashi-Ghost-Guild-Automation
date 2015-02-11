@@ -1,9 +1,11 @@
 function crewmateRequest() {
-	var crewmatesPerPage = 10;
 
-	$('button').filter(function (a, b) {
-	    return b.textContent.trim() == "Crewmate Request";
-	}).each(function (i, el) {
+	var $buttons = $('button').filter(function (a, b) {
+	    return b.textContent.trim() == "Crewmate Request"
+	}),
+	crewmatesPerPage = $buttons.length;
+
+	$buttons.each(function (i, el) {
 	    setTimeout(function () {
 	        el.click();
 	        if (i + 1 === crewmatesPerPage) {
