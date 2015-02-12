@@ -1,5 +1,5 @@
 //http://zc2.ayakashi.zynga.com/app.php?_c=battle
-$(document.body).css("visibility", "hidden");
+//$(document.body).css("visibility", "hidden");
 
 var foundEnemy = false;
 var testDefense = 42;
