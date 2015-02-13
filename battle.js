@@ -104,7 +104,7 @@ if (!foundEnemy) {
 }
 
 //sealstone battle link with target stone link
-//http://zc2.ayakashi.zynga.com/app.php?_c=parts_pvp_event&action=battle_list&evid=78&target_item_id=2
+//http://zc2.ayakashi.zynga.com/app.php?_c=parts_pvp_event&action=battle_list&evid=82&target_item_id=2
 
 //$('a[href*=zid]').each(function (i, el) {
 //    var zid = el.href.match(/zid=(\d+)/)[1];
