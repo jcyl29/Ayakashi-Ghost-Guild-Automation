@@ -7,6 +7,7 @@ function crewmateRequest() {
 
     $buttons.each(function (i, el) {
         setTimeout(function () {
+            el.scrollIntoView();
             el.click();
             if (i + 1 === crewmatesPerPage) {
                 $('button#update-user-list').click();
